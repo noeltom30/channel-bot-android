@@ -1,4 +1,4 @@
-gitignore
+.gitignore
 src/__pycache__/
 .venv/
 ui.xml
