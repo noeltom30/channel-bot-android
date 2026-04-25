@@ -9,9 +9,13 @@ class ADB:
             self.connect(self.device)
         
 
-    def _run(self, args):
+    def _run(self, args, use_device=False):
+        cmd = [self.adb_path]
+        if use_device and self.device:
+            cmd.extend(["-s", self.device])
+
         result = subprocess.run(
-            [self.adb_path] + args,
+            cmd + args,
             capture_output=True,
             text=True,
             encoding='utf-8',
@@ -28,7 +32,7 @@ class ADB:
         return self._run(["connect", device])
 
     def shell(self, cmd):
-        return self._run(["shell"] + cmd.split())
+        return self._run(["shell"] + cmd.split(), use_device=True)
 
     def tap(self, x, y):
         self.shell(f"input tap {x} {y}")
